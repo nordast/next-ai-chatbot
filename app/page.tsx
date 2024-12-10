@@ -4,15 +4,34 @@ import LandingSections from "@/components/LandingSections";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowDownCircleIcon, MessageCircle, X } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowDownCircleIcon, MessageCircle, Send, X } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useChat } from "@ai-sdk/react";
+import { Input } from "@/components/ui/input";
 
 export default function Chat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showChatIcon, setShowChatIcon] = useState(false);
 
   const chatIconRef = useRef<HTMLButtonElement>(null);
+
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    stop,
+    reload,
+    error,
+  } = useChat({ api: "/api/gemini" });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -97,6 +116,27 @@ export default function Chat() {
                   </div>
                 </ScrollArea>
               </CardContent>
+              <CardFooter>
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex w-full items-center space-x-2"
+                >
+                  <Input
+                    value={input}
+                    onChange={handleInputChange}
+                    className="flex-1"
+                    placeholder="Type your message..."
+                  />
+                  <Button
+                    type="submit"
+                    className="size-9"
+                    disabled={isLoading}
+                    size="icon"
+                  >
+                    <Send className="size-4 mt-0.5 mr-0.5" />
+                  </Button>
+                </form>
+              </CardFooter>
             </Card>
           </motion.div>
         )}
