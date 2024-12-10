@@ -4,7 +4,13 @@ import LandingSections from "@/components/LandingSections";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowDownCircleIcon, MessageCircle, Send, X } from "lucide-react";
+import {
+  ArrowDownCircleIcon,
+  Loader2,
+  MessageCircle,
+  Send,
+  X,
+} from "lucide-react";
 import {
   Card,
   CardContent,
@@ -111,9 +117,48 @@ export default function Chat() {
               </CardHeader>
               <CardContent>
                 <ScrollArea className="h-[300px] pr-4">
-                  <div className="w-full mt-32 text-gray-500 flex items-center justify-center gap-3">
-                    No messages yet.
-                  </div>
+                  {messages?.length === 0 && (
+                    <div className="w-full mt-32 text-gray-500 flex items-center justify-center gap-3">
+                      No messages yet.
+                    </div>
+                  )}
+
+                  {messages?.map((msg, idx) => (
+                    <div
+                      key={idx}
+                      className="flex flex-col items-start space-y-2 px-4 py-3 text-sm"
+                    >
+                      text
+                    </div>
+                  ))}
+
+                  {isLoading && (
+                    <div className="w-full flex flex-col items-center justify-center gap-3">
+                      <Loader2 className="animate-spin size-8 text-primary" />
+
+                      <button
+                        type="button"
+                        className="mt-2 p-2 hover:underline"
+                        onClick={() => stop()}
+                      >
+                        Abort
+                      </button>
+                    </div>
+                  )}
+
+                  {error && (
+                    <div className="w-full flex flex-col items-center justify-center gap-3">
+                      <div>An error occurred.</div>
+
+                      <button
+                        type="button"
+                        className="mt-2 p-2 hover:underline"
+                        onClick={() => reload()}
+                      >
+                        Retry
+                      </button>
+                    </div>
+                  )}
                 </ScrollArea>
               </CardContent>
               <CardFooter>
