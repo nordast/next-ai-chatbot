@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDownCircleIcon, MessageCircle, X } from "lucide-react";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Chat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -75,7 +76,7 @@ export default function Chat() {
           >
             <Card className="border-2 ">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                <CardTitle className="text-lg font-medium">
+                <CardTitle className="text-lg font-bold">
                   Chat with AI
                 </CardTitle>
 
@@ -89,6 +90,13 @@ export default function Chat() {
                   <span className="sr-only">Close</span>
                 </Button>
               </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-[300px] pr-4">
+                  <div className="w-full mt-32 text-gray-500 flex items-center justify-center gap-3">
+                    No messages yet.
+                  </div>
+                </ScrollArea>
+              </CardContent>
             </Card>
           </motion.div>
         )}
