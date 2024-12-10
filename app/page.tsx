@@ -169,11 +169,15 @@ export default function Chat() {
                             },
 
                             ul: ({ children }) => (
-                              <ul className="list-disc ml-4">{children}</ul>
+                              <ul className="list-disc ml-4 my-2">
+                                {children}
+                              </ul>
                             ),
 
                             ol: ({ children }) => (
-                              <li className="list-decimal ml-4">{children}</li>
+                              <ul className="list-decimal ml-4 my-2">
+                                {children}
+                              </ul>
                             ),
                           }}
                         />

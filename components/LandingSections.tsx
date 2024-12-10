@@ -29,7 +29,7 @@ const LandingSections = () => {
               </div>
               <div className="space-x-4">
                 <Button asChild>
-                  <Link href="/signup">Get Started</Link>
+                  <Link href="#">Get Started</Link>
                 </Button>
                 <Button variant="outline" asChild>
                   <Link href="#features">Learn More</Link>
@@ -231,7 +231,7 @@ const LandingSections = () => {
               </div>
               <div className="w-full max-w-sm space-y-2">
                 <Button className="w-full" asChild>
-                  <Link href="/signup">Get Started for Free</Link>
+                  <Link href="#">Get Started for Free</Link>
                 </Button>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   No credit card required. Start with our free plan and upgrade
