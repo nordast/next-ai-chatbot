@@ -3,6 +3,7 @@
 import LandingSections from "@/components/LandingSections";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import {
   ArrowDownCircleIcon,
@@ -21,12 +22,14 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useChat } from "@ai-sdk/react";
 import { Input } from "@/components/ui/input";
+import remarkGfm from "remark-gfm";
 
 export default function Chat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showChatIcon, setShowChatIcon] = useState(false);
 
   const chatIconRef = useRef<HTMLButtonElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const {
     messages,
@@ -56,6 +59,12 @@ export default function Chat() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
@@ -126,15 +135,55 @@ export default function Chat() {
                   {messages?.map((msg, idx) => (
                     <div
                       key={idx}
-                      className="flex flex-col items-start space-y-2 px-4 py-3 text-sm"
+                      className={`mb-4 ${msg.role === "user" ? "text-right" : "text-left"}`}
                     >
-                      text
+                      <div
+                        className={`inline-block p-4 rounded-lg ${msg.role === "user" ? "bg-primary text-primary-foreground dark:bg-neutral-900 dark:text-slate-100" : "bg-muted"}`}
+                      >
+                        <ReactMarkdown
+                          children={msg.content}
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            code: ({
+                              node,
+                              inline,
+                              className,
+                              children,
+                              ...props
+                            }) => {
+                              return inline ? (
+                                <code
+                                  {...props}
+                                  className="bg-gray-200 px-1 rounded"
+                                >
+                                  {children}
+                                </code>
+                              ) : (
+                                <pre
+                                  {...props}
+                                  className="bg-gray-200 p-2 rounded"
+                                >
+                                  <code>{children}</code>
+                                </pre>
+                              );
+                            },
+
+                            ul: ({ children }) => (
+                              <ul className="list-disc ml-4">{children}</ul>
+                            ),
+
+                            ol: ({ children }) => (
+                              <li className="list-decimal ml-4">{children}</li>
+                            ),
+                          }}
+                        />
+                      </div>
                     </div>
                   ))}
 
                   {isLoading && (
-                    <div className="w-full flex flex-col items-center justify-center gap-3">
-                      <Loader2 className="animate-spin size-8 text-primary" />
+                    <div className="w-full flex items-center justify-center gap-3">
+                      <Loader2 className="animate-spin size-6 text-primary" />
 
                       <button
                         type="button"
@@ -159,6 +208,8 @@ export default function Chat() {
                       </button>
                     </div>
                   )}
+
+                  <div ref={scrollRef}></div>
                 </ScrollArea>
               </CardContent>
               <CardFooter>
