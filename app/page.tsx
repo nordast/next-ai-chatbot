@@ -4,7 +4,8 @@ import LandingSections from "@/components/LandingSections";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowDownCircleIcon, MessageCircle } from "lucide-react";
+import { ArrowDownCircleIcon, MessageCircle, X } from "lucide-react";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Chat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -37,6 +38,7 @@ export default function Chat() {
   return (
     <div className="flex flex-col min-h-screen">
       <LandingSections />
+
       <AnimatePresence>
         {showChatIcon && (
           <motion.div
@@ -58,6 +60,36 @@ export default function Chat() {
                 <ArrowDownCircleIcon className="size-12" />
               )}
             </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isChatOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-20 right-4 z-50 w-[95%] md:w-[500px]"
+          >
+            <Card className="border-2 ">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-lg font-medium">
+                  Chat with AI
+                </CardTitle>
+
+                <Button
+                  onClick={toggleChat}
+                  size="sm"
+                  variant="ghost"
+                  className="px-2 py-0"
+                >
+                  <X className="size-4" />
+                  <span className="sr-only">Close</span>
+                </Button>
+              </CardHeader>
+            </Card>
           </motion.div>
         )}
       </AnimatePresence>
