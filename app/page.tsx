@@ -143,29 +143,17 @@ export default function Chat() {
                         <ReactMarkdown
                           remarkPlugins={[remarkGfm]}
                           components={{
-                            code: ({
-                              node,
-                              inline,
-                              className,
-                              children,
-                              ...props
-                            }) => {
-                              return inline ? (
-                                <code
-                                  {...props}
-                                  className="bg-gray-200 px-1 rounded"
-                                >
-                                  {children}
-                                </code>
-                              ) : (
-                                <pre
-                                  {...props}
-                                  className="bg-gray-200 p-2 rounded"
-                                >
-                                  <code>{children}</code>
-                                </pre>
-                              );
-                            },
+                            code: ({ children, ...props }) => (
+                              <pre
+                                {...props}
+                                ref={
+                                  props.ref as React.LegacyRef<HTMLPreElement>
+                                }
+                                className="bg-gray-200 p-2 rounded"
+                              >
+                                <code>{children}</code>
+                              </pre>
+                            ),
 
                             ul: ({ children }) => (
                               <ul className="list-disc ml-4 my-2">
